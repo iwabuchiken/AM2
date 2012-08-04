@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, AM2!</string>
+    <string name="app_name">AM2</string>
+
+    <!-- menu_main.xml -->
+	    <string name="main_opt_menu_register">登録</string>
+	    
+    <!-- Generic items -->
+	    <string name="generic_tv_confirm">確認</string>
+	    <string name="generic_tv_menu">メニュー</string>
+	    <string name="generic_tv_register">登録</string>
+	    <string name="generic_tv_clear">クリアー</string>
+	    <string name="generic_tv_input_empty">入力がありません</string>
+	    
+	    <string name="generic_bt_clear">クリアー</string>
+	    <string name="generic_bt_back">戻る</string>
+	    <string name="generic_bt_ok">OK</string>
+	    <string name="generic_bt_cancel">キャンセル</string>
+	    
+    <!-- main.xml -->
+	    <string name="main_tv_title">活動</string>
+	    <string name="main_bt_start">開始</string>
+	    <string name="main_bt_pause">中断</string>
+	    <string name="main_bt_stop">終了</string>
+	
+	<!-- dlg_register.xml -->
+		<string name="dlg_register_lv_activity">活動</string>
+		<string name="dlg_register_lv_group">グループ</string>
+		<string name="dlg_register_lv_genre">ジャンル</string>
+		
+	
+	<!-- actv_register_activity.xml -->
+		<string name="actv_register_activity_tv_register_activity">活動登録</string>
+		<string name="actv_register_activity_tv_name">名前</string>
+		<string name="actv_register_activity_tv_group">グループ</string>
+		
+	<!-- actv_register_group.xml -->
+		<string name="actv_register_group_tv_title">登録：グループ</string>
+		
+	<!-- actv_register_genre.xml -->
+		<string name="actv_register_genre_tv_title">登録：ジャンル</string>
+	
+	<!-- dlg_activity_list_menu.xml -->
+		<string name="dlg_activity_list_menu_title">活動</string>
+		<string name="dlg_activity_list_menu_delete">削除</string>
+		
+	<!-- dlg_confirm_delete_activity.xml -->
+		<string name="dlg_confirm_delete_activity_tv_message">この活動を削除しますか？</string>
+		
+	<!-- actv_show_activity.xml -->
+		<string name="actv_show_activity_bt_1">Bt1</string>
+		<string name="actv_show_activity_bt_2">追加</string>
+		<string name="actv_show_activity_bt_3">Bt3</string>
+	
+	<!-- actv_memo.xml -->
+		
+</resources>

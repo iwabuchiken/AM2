@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    
+    android:layout_gravity="center_horizontal"
+    
+    android:orientation="vertical" 
+    
+    
+    >
+
+    <EditText
+        android:id="@+id/actv_memo_et_content"
+        
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        
+        android:layout_gravity="center_horizontal"
+        android:gravity="top|left"
+        
+        android:textSize="25dp"
+        
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_gravity="center_horizontal" 
+        
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+
+        
+        >
+
+        <Button
+            android:id="@+id/actv_memo_bt_add"
+            
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            
+            android:text="@string/generic_bt_ok"
+            android:textSize="25dp" 
+            android:textColor="@color/blue1"
+            
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="4dp"
+            
+            />
+
+        <Button
+            android:id="@+id/actv_memo_bt_clear"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/generic_bt_clear"
+            android:textColor="@color/red"
+            android:textSize="25dp" />
+
+        <Button
+            android:id="@+id/actv_memo_bt_back"
+            
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            
+            
+            android:text="@string/generic_bt_back" 
+            android:textSize="25dp"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/actv_memo_lv"
+        
+        android:layout_width="match_parent"
+        android:layout_height="150dp" 
+        
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        
+        >
+    </ListView>
+
+    <GridView
+        android:id="@+id/actv_memo_gv"
+        
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        
+        android:layout_gravity="center_horizontal"
+        
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        
+        android:numColumns="3" >
+    </GridView>
+
+</LinearLayout>
