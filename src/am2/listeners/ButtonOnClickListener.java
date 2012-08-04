@@ -1,7 +1,7 @@
 package am2.listeners;
 import java.io.File;
 
-import am1.main.MemoActv;
+import am2.main.MemoActv;
 import am2.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;

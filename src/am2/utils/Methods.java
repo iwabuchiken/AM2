@@ -1,14 +1,8 @@
 package am2.utils;
 
-import am1.items.ActivityItem;
-import am1.items.Memo;
-import am1.listeners.DialogButtonOnClickListener;
-import am1.listeners.DialogButtonOnTouchListener;
-import am1.listeners.DialogOnItemClickListener;
-import am1.main.MainActv;
-import am1.main.R;
-
-
+import am2.main.*;
+import am2.items.*;
+import am2.listeners.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,9 +22,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import am1.main.MainActv;
-import am1.main.R;
-import am2.utils.*;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -2678,7 +2669,7 @@ public class Methods {
 		Dialog dlg = Methods.dlg_template_cancel(
 										actv, 
 //										R.layout.dlg_input_empty, 
-										R.layout.dlg,
+										R.layout.dlg_input_empty_original,
 										R.string.generic_tv_input_empty, 
 										R.id.dlg_input_empty_bt_ok, 
 										Methods.DialogButtonTags.dlg_generic_dismiss);

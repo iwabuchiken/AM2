@@ -1,7 +1,7 @@
 package am2.listeners;
 
-import am1.items.ActivityItem;
-import am1.main.*;
+import am2.items.ActivityItem;
+import am2.main.*;
 import am2.utils.Methods;
 
 

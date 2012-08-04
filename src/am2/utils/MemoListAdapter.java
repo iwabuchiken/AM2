@@ -2,8 +2,8 @@ package am2.utils;
 
 import java.util.List;
 
-import am1.items.Memo;
-import am1.main.R;
+import am2.items.Memo;
+import am2.main.R;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;

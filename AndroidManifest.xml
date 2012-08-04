@@ -5,6 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="10" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:icon="@drawable/am1_project_icon_50x50"
@@ -18,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActvityActv"></activity>
+        <activity android:name=".RegisterGroupActv"></activity>
+        <activity android:name=".RegisterGenreActv"></activity>
+        <activity android:name=".ShowActivityActv"></activity>
+        <activity android:name=".MemoActv"></activity>
+        
     </application>
 
 </manifest>
