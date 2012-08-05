@@ -31,7 +31,7 @@ public class MemoActv extends Activity {
 		//
 		setContentView(R.layout.actv_memo);
 
-		this.setTitle("AM1/" + this.getClass().getName());
+		this.setTitle(this.getClass().getName());
 		
 		initial_setup();
 		

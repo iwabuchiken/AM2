@@ -2662,6 +2662,97 @@ public class Methods {
 		
 	}//public static List<Memo> getMemoList_fromDB(Activity actv)
 
+	public static List<Memo> getMemoList_fromDB(Activity actv, long ai_db_id) {
+		/*----------------------------
+		 * 1. db setup
+		 * 1-1. Table exists?
+		 * 2. Cursor
+		 * 3. Build item objects
+		 * 
+		 * 9. Close db
+			----------------------------*/
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 1-1. Table exists?
+			----------------------------*/
+		boolean res = dbu.tableExists(rdb, DBUtils.tableName_memos);
+		
+		if (res == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + DBUtils.tableName_activities);
+			
+			rdb.close();
+			
+			return null;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 2. Cursor
+			----------------------------*/
+		String sql = "SELECT * FROM " + DBUtils.tableName_memos +
+						" WHERE " + android.provider.BaseColumns._ID + "='" +
+						String.valueOf(ai_db_id) + "'";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount() < 1");
+			
+			rdb.close();
+			
+			return null;
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 3. Build item objects
+			----------------------------*/
+		List<Memo> memoList = new ArrayList<Memo>();
+		
+		c.moveToFirst();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+			
+			Memo m = new Memo(
+								c.getString(1),		// text
+								c.getLong(2),		// activity_id
+								c.getLong(4),		// created_at
+								c.getLong(5)		// modified_at
+								);
+			
+			// db_id
+			m.setDb_id(c.getLong(0));
+			
+			memoList.add(m);
+			
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		rdb.close();
+		
+		return memoList;
+	}//public static List<Memo> getMemoList_fromDB
+
+
 	public static void dlg_inputEmpty(Activity actv) {
 		/*----------------------------
 		 * memo

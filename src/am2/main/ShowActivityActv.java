@@ -41,7 +41,7 @@ public class ShowActivityActv extends ListActivity {
 		//
 		setContentView(R.layout.actv_show_activity);
 
-		this.setTitle("AM1/" + this.getClass().getName());
+		this.setTitle(this.getClass().getName());
 		
 	}//public void onCreate(Bundle savedInstanceState)
 
@@ -84,7 +84,7 @@ public class ShowActivityActv extends ListActivity {
 		/*----------------------------
 		 * 3. Prepare => ActivityItem list
 			----------------------------*/
-		memoList = Methods.getMemoList_fromDB(this);
+		memoList = Methods.getMemoList_fromDB(this, ai.getDb_id());
 		
 		if (memoList == null) {
 			

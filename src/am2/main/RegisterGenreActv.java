@@ -28,6 +28,8 @@ public class RegisterGenreActv extends Activity {
 
 		//
 		setContentView(R.layout.actv_register_genre);
+
+		this.setTitle(this.getClass().getName());
 		
 		vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
 

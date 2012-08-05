@@ -43,7 +43,7 @@ public class MainActv extends ListActivity {
 		//
 		setContentView(R.layout.main);
 		
-		this.setTitle("AM1/" + this.getClass().getName());
+		this.setTitle(this.getClass().getName());
 
 		vib = (Vibrator) this.getSystemService(this.VIBRATOR_SERVICE);
 		
@@ -86,21 +86,6 @@ public class MainActv extends ListActivity {
 			return;
 			
 		}//if (i_res = -1)
-		
-//		/*----------------------------
-//		 * 2. Query
-//			----------------------------*/
-////		String sql = "SELECT * FROM " + DBUtils.tableName_activities + "'";
-//		String sql = "SELECT * FROM " + DBUtils.tableName_activities;
-//		
-//		Cursor c = rdb.rawQuery(sql, null);
-//		
-//		c.moveToFirst();
-//
-//		// Log
-//		Log.d("MainActv.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "c.getCount(): " + c.getCount());
 		
 		/*----------------------------
 		 * 3. Prepare => ActivityItem list
@@ -150,6 +135,18 @@ public class MainActv extends ListActivity {
 			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "ai.getName(): " + ai.getName() + "/" + "ai.getDb_id(): " + ai.getDb_id());
+			
+			
+		}
+
+		//debug
+		for (ActivityItem ai : aiList) {
+			
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", 
+					"ai.getGroup_id(): " + ai.getGroup_id());
 			
 			
 		}
