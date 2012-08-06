@@ -1,5 +1,6 @@
 package am2.listeners;
 
+import am2.items.Memo;
 import am2.utils.Methods;
 import android.app.Activity;
 import android.app.Dialog;
@@ -25,6 +26,7 @@ public class DialogButtonOnClickListener implements OnClickListener {
 	// Used in => Methods.dlg_addMemo(Activity actv, long file_id, String tableName)
 	long file_id;
 	String tableName;
+	Memo m;		// Used in => dlg_edit_memo_ok
 	
 	public DialogButtonOnClickListener(Activity actv, Dialog dlg) {
 		//
@@ -59,6 +61,17 @@ public class DialogButtonOnClickListener implements OnClickListener {
 		
 	}//public DialogButtonOnClickListener(Activity actv, Dialog dlg, long file_id, String tableName)
 
+	public DialogButtonOnClickListener(Activity actv, Dialog dlg, Dialog dlg2, Memo m) {
+		this.actv = actv;
+		this.dlg = dlg;
+		this.dlg2 = dlg2;
+		
+		this.m = m;
+		//
+		vib = (Vibrator) actv.getSystemService(actv.VIBRATOR_SERVICE);
+		
+	}
+
 	@Override
 	public void onClick(View v) {
 		//
@@ -88,6 +101,12 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			Methods.deleteActivity(actv, dlg, dlg2);
 			
 			break;// case dlg_confirm_delete_activity_bt_ok
+
+		case dlg_edit_memo_ok:// ----------------------------------------------------
+			
+			Methods.editMemo(actv, dlg, dlg2, m);
+			
+			break;// case dlg_edit_memo_ok
 			
 		default: // ----------------------------------------------------
 			break;

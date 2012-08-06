@@ -97,6 +97,8 @@ public class Methods {
 		// dlg_confirm_delete_activity.xml
 		dlg_confirm_delete_activity_bt_ok,
 
+		// dlg_edit_memo.xml
+		dlg_edit_memo_ok,
 		
 	}//public static enum DialogButtonTags
 	
@@ -3423,7 +3425,7 @@ public class Methods {
 				// Cancel button, DialogTags => Cancel
 				R.id.dlg_menu_memo_btn_cancel, 
 				Methods.DialogButtonTags.dlg_generic_dismiss);
-		
+//		
 		/*----------------------------
 		 * 2. Prep => List
 			----------------------------*/
@@ -3467,18 +3469,113 @@ public class Methods {
 		/*----------------------------
 		 * 1. Buil dialog
 		 * 2. Set text
-		 * 2-2. "Ok" button
-		 * 3. Show dialog
+		 * 3. Listeners
+		 * 4. Show dialog
 			----------------------------*/
 		Dialog dlg2 = new Dialog(actv);
 		
 		//
-//		dlg2.setContentView(R.layout.dlg2_register);
+		dlg2.setContentView(R.layout.dlg_edit_memo);
 		
 		// Title
 		dlg2.setTitle(actv.getString(R.string.generic_tv_register));
 		
+		/*----------------------------
+		 * 2. Set text
+			----------------------------*/
+		String text = m.getText();
+		
+		EditText et = (EditText) dlg2.findViewById(R.id.dlg_edit_memo_et_content);
+		
+		et.setText(text);
+		
+		et.setSelection(text.length());
+		
+		/*----------------------------
+		 * 3. Listeners
+			----------------------------*/
+		/*----------------------------
+		 * OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_edit_memo_bt_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_edit_memo_cancel);
+		
+		//
+		btn_ok.setTag(Methods.DialogButtonTags.dlg_edit_memo_ok);
+		btn_cancel.setTag(Methods.DialogButtonTags.dlg_generic_dismiss_second_dialog);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		 * OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2, m));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 4. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
 	}//public static void dlg_editMemo(Activity actv, Dialog dlg, Memo m)
+
+	public static void editMemo(Activity actv, Dialog dlg, Dialog dlg2, Memo m) {
+		/*----------------------------
+		 * 1. Input empty?
+		 * 2. Update data
+		 * 3. Show message
+		 * 4. Dismiss dialogues
+			----------------------------*/
+		EditText et = (EditText) dlg2.findViewById(R.id.dlg_edit_memo_et_content);
+		
+		String content = et.getText().toString();
+		
+		if (content.length() < 1) {
+			
+			// debug
+			Toast.makeText(actv, "入力がありません", 2000).show();
+			
+			return;
+			
+		}//if (content.length() < 1)
+		
+		/*----------------------------
+		 * 2. Update data
+			----------------------------*/
+		m.setText(content);
+		
+		boolean res = DBUtils.updateData_memos(actv, m);
+		
+		/*----------------------------
+		 * 3. Show message
+			----------------------------*/
+		if (res == true) {
+			
+			// debug
+			Toast.makeText(actv, "メモを更新しました", 2000).show();
+			
+			dlg2.dismiss();
+			dlg.dismiss();
+			
+			// Update list
+			ShowActivityActv.memoList.clear();
+			ShowActivityActv.memoList.addAll(Methods.getMemoList_fromDB(actv, m.getActivity_id()));
+			
+			ShowActivityActv.mlAdapter.notifyDataSetChanged();
+			
+		} else {//if (res == true)
+
+			// debug
+			Toast.makeText(actv, "メモを更新できませんでした", 2000).show();
+		
+		}//if (res == true)
+		
+		
+	}//public static void editMemo(Activity actv, Dialog dlg, Dialog dlg2)
 
 
 }//public class Methods

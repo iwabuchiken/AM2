@@ -5,6 +5,7 @@ package am2.utils;
 
 import java.util.ArrayList;
 
+import am2.items.Memo;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -1057,6 +1058,73 @@ public class DBUtils extends SQLiteOpenHelper{
 	 * 
 	 * <Steps> 1.
 	 ****************************************/
+	public static boolean updateData_memos(Activity actv, Memo m) {
+		/*----------------------------
+		* Steps
+		* 1. 
+		----------------------------*/
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+
+//		"text", "activity_id", "group_id", "created_at", "modified_at"
+		
+		String sql = "UPDATE " + DBUtils.tableName_memos + " SET " + 
+			
+			"text='" + m.getText() + "'" +
+			
+			
+			" WHERE " + android.provider.BaseColumns._ID + "= '" + m.getDb_id() + "'";
+
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sql: " + sql);
+		
+		
+		try {
+		
+			wdb.execSQL(sql);
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "sql => Done: " + sql);
+			
+//			Methods.toastAndLog(actv, "Data updated", 2000);
+			
+			wdb.close();
+			
+			return true;
+		
+		
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+			+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+			+ "]", "Exception => " + e.toString() + " / " + "sql: " + sql);
+			
+			wdb.close();
+			
+			return false;
+		}
+		
+	}//public void updateData_memos
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 
+	 * 1. Methods.updateData(Activity actv, String tableName, FileItem fi)
+	 * 
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
 	public boolean updateData_memos(SQLiteDatabase wdb, 
 //																String tableName, FileItem fi) {
 																String tableName) {
@@ -1064,6 +1132,7 @@ public class DBUtils extends SQLiteOpenHelper{
 		* Steps
 		* 1. 
 		----------------------------*/
+		
 //		String sql = "UPDATE " + tableName + " SET " + 
 //			
 //			"file_name='" + fi.getFile_name() + "', " +
