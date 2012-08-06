@@ -99,6 +99,10 @@ public class Methods {
 
 		// dlg_edit_memo.xml
 		dlg_edit_memo_ok,
+
+		// dlg_confirm_delete_memo.xml
+		dlg_confirm_delete_memo_ok,
+		
 		
 	}//public static enum DialogButtonTags
 	
@@ -3577,6 +3581,122 @@ public class Methods {
 		
 	}//public static void editMemo(Activity actv, Dialog dlg, Dialog dlg2)
 
+	public static void dlg_confirm_deleteMemo(Activity actv, Dialog dlg, Memo m) {
+		/*----------------------------
+		 * 1. Buil dialog
+		 * 2. Set text
+		 * 3. Listeners
+		 * 4. Show dialog
+			----------------------------*/
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(R.layout.dlg_confirm_delete_memo);
+		
+		// Title
+		dlg2.setTitle(actv.getString(R.string.generic_tv_confirm));
+		
+		/*----------------------------
+		 * 2. Set text
+			----------------------------*/
+		String text = m.getText();
+		
+		if (text.length() > 10) {
+			
+			text = text.substring(0, 10);
+			
+			text += "...";
+			
+		}//if (text.length() > 10)
+		
+		
+		TextView tv = (TextView) dlg2.findViewById(R.id.dlg_confirm_delete_memo_tv_memo_content);
+		
+		tv.setText(text);
+		
+		/*----------------------------
+		 * 3. Listeners
+			----------------------------*/
+		/*----------------------------
+		 * OnTouch
+			----------------------------*/
+		//
+		Button btn_ok = (Button) dlg2.findViewById(R.id.dlg_confirm_delete_memo_btn_ok);
+		Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_confirm_delete_memo_btn_cancel);
+		
+		//
+		btn_ok.setTag(Methods.DialogButtonTags.dlg_confirm_delete_memo_ok);
+		btn_cancel.setTag(Methods.DialogButtonTags.dlg_generic_dismiss_second_dialog);
+		
+		//
+		btn_ok.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		 * OnClick
+			----------------------------*/
+		//
+		btn_ok.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2, m));
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+		
+		/*----------------------------
+		 * 4. Show dialog
+			----------------------------*/
+		dlg2.show();
+		
+	}//public static void dlg_confirm_deleteMemo(Activity actv, Dialog dlg, Memo m)
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. DialogButtonOnClickListener # dlg_confirm_delete_memo_ok
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void deleteMemo(Activity actv, Dialog dlg, Dialog dlg2, Memo m) {
+		/*----------------------------
+		 * 1. Delete memo
+		 * 2. Message
+		 * 3. Dismiss dlg's
+		 * 4. Update memo list
+			----------------------------*/
+		long activity_id = m.getActivity_id();
+		
+		boolean res = DBUtils.deleteData_memo(actv, m);
+		
+		if (res == true) {
+			
+			//debug
+			Toast.makeText(actv, "ÉÅÉÇÇçÌèúÇµÇ‹ÇµÇΩ", 2000).show();
+			
+			dlg2.dismiss(); dlg.dismiss();
+			
+		} else {//if (res == true)
+
+			//debug
+			Toast.makeText(actv, "ÉÅÉÇÇçÌèúÇ≈Ç´Ç‹ÇπÇÒÇ≈ÇµÇΩ", 2000).show();
+			
+		}//if (res == true)
+		
+		/*----------------------------
+		 * 4. Update memo list
+			----------------------------*/
+		Methods.updateMemoList(actv, activity_id);
+		
+	}//public static void deleteMemo(Activity actv, Dialog dlg, Dialog dlg2, Memo m)
+
+	public static void updateMemoList(Activity actv, long activity_id) {
+		
+		ShowActivityActv.memoList.clear();
+		ShowActivityActv.memoList.addAll(Methods.getMemoList_fromDB(actv, activity_id));
+		
+		ShowActivityActv.mlAdapter.notifyDataSetChanged();
+
+	}//public static void updateMemoList(Activity actv, Memo m)
 
 }//public class Methods
 

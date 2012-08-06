@@ -74,4 +74,8 @@
 		<string name="dlg_edit_memo_tv_activity">活動</string>
 		<string name="dlg_edit_memo_tv_group">グループ</string>
 		
+	<!-- dlg_confirm_delete_memo.xml -->
+		<string name="dlg_confirm_delete_memo_message">このメモを削除しますか？</string>
+		
+		
 </resources>

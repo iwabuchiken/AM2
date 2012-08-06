@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import am2.items.Memo;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -916,6 +917,89 @@ public class DBUtils extends SQLiteOpenHelper{
 	/****************************************
 	 *
 	 * 
+	 * <Caller> 1. Methods.deleteMemo(Activity actv, Dialog dlg, Dialog dlg2, Memo m)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return>
+	 *  1.	false => the memo not in db
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static boolean deleteData_memo(Activity actv, Memo m) {
+//		return false;
+		/*----------------------------
+		* Steps
+		* 1. Get db
+		* 1-2. Is in db?
+		* 2. Sql
+		* 3. Execute
+		----------------------------*/
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		
+		//
+		SQLiteDatabase wdb = dbu.getWritableDatabase();
+		
+		/*----------------------------
+		 * 1-2. Is in db?
+			----------------------------*/
+		boolean res = isInDB_memo(wdb, m.getDb_id());
+		
+		if (res == false) {
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "res == false");
+			
+			wdb.close();
+			
+			return false;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 2. Sql
+			----------------------------*/
+		String sql = 
+//					"DELETE FROM " + DBUtils.tableName_activities + 
+					"DELETE FROM " + DBUtils.tableName_memos +
+					" WHERE " + android.provider.BaseColumns._ID + "='" + m.getDb_id() + "'";
+
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "sql: " + sql);
+		
+		try {
+			wdb.execSQL(sql);
+			
+			wdb.close();
+			
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "sql done");
+			
+			return true;
+			
+		} catch (SQLException e) {
+			// Log
+			Log.d("DBUtils.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception => " + e.toString());
+			
+			wdb.close();
+			
+			return false;
+			
+		}//try
+
+	}//public boolean deleteData_memo(Activity actv, Memo m)
+
+	/****************************************
+	 *
+	 * 
 	 * <Caller> 1. Methods.deleteItem_fromDB()
 	 * 
 	 * <Desc> 1. <Params> 1.
@@ -1001,6 +1085,33 @@ public class DBUtils extends SQLiteOpenHelper{
 		
 		String sql = "SELECT COUNT(*) FROM " + tableName + " WHERE file_id = '" +
 						String.valueOf(file_id) + "'";
+		
+		long result = DatabaseUtils.longForQuery(db, sql, null);
+		
+		// Log
+		Log.d("DBUtils.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "result => " + String.valueOf(result));
+		
+		if (result > 0) {
+
+			return true;
+			
+		} else {//if (result > 0)
+			
+			return false;
+			
+		}//if (result > 0)
+		
+//		return false;
+		
+	}//public boolean isInDB_long(SQLiteDatabase db, String tableName, long file_id)
+
+	public static boolean isInDB_memo(SQLiteDatabase db, long memo_db_id) {
+		
+		String sql = "SELECT COUNT(*) FROM " + DBUtils.tableName_memos + 
+							" WHERE " + android.provider.BaseColumns._ID + "= '" +
+							memo_db_id + "'";
 		
 		long result = DatabaseUtils.longForQuery(db, sql, null);
 		
@@ -1167,4 +1278,5 @@ public class DBUtils extends SQLiteOpenHelper{
 	}//public void updateData_memos
 
 }//public class DBUtils
+
 

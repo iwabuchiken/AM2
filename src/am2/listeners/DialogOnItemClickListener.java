@@ -190,7 +190,9 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 				
 				Methods.dlg_editMemo(actv, dlg, m);
 				
-			} else {//if (item.equals(actv.getString(R.string.generic_tv_edit)))
+			} else if (item.equals(actv.getString(R.string.generic_tv_delete))){
+				
+				Methods.dlg_confirm_deleteMemo(actv, dlg, m);
 				
 			}//if (item.equals(actv.getString(R.string.generic_tv_edit)))
 			

@@ -107,10 +107,16 @@ public class DialogButtonOnClickListener implements OnClickListener {
 			Methods.editMemo(actv, dlg, dlg2, m);
 			
 			break;// case dlg_edit_memo_ok
+
+		case dlg_confirm_delete_memo_ok:// ---------------------------------------
+			
+			Methods.deleteMemo(actv, dlg, dlg2, m);
+			
+			break;
 			
 		default: // ----------------------------------------------------
 			break;
 		}//switch (tag_name)
 	}
 
-}
+}//public class DialogButtonOnClickListener implements OnClickListener

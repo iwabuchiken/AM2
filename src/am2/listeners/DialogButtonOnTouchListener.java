@@ -39,7 +39,9 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 				
 				case dlg_generic_dismiss:
 				case dlg_confirm_delete_activity_bt_ok:
-					
+				case dlg_edit_memo_ok:
+				case dlg_confirm_delete_memo_ok:
+				case dlg_generic_dismiss_second_dialog:
 					//
 					v.setBackgroundColor(Color.GRAY);
 					
@@ -53,6 +55,9 @@ public class DialogButtonOnTouchListener implements OnTouchListener {
 
 			case dlg_generic_dismiss:
 			case dlg_confirm_delete_activity_bt_ok:
+			case dlg_edit_memo_ok:
+			case dlg_confirm_delete_memo_ok:
+			case dlg_generic_dismiss_second_dialog:
 				
 					v.setBackgroundColor(Color.WHITE);
 					
