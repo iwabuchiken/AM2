@@ -191,6 +191,12 @@ public class MainActv extends ListActivity {
             	
             	break;//case 0
             	
+            case R.id.main_opt_menu_filter://--------------------------------
+            	
+            	Methods.dlg_main_opt_filter(this);
+            	
+            	break;// R.id.main_opt_menu_filter
+            	
         }//switch (item.getItemId())
         
 		return true;

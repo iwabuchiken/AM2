@@ -49,8 +49,8 @@ public class ShowActivityActv extends ListActivity {
 		/*----------------------------
 		 * 1. db setup
 		 * 2. Query
-		 * 3. Prepare => ActivityItem list
-		 * 4. Prepare => ActivityItemListAdapter
+		 * 3. Prepare => Memo list
+		 * 4. Prepare => MemoListAdapter
 		 * 5. Set adapter to list
 		 * 
 		 * 9. Close db
@@ -82,9 +82,10 @@ public class ShowActivityActv extends ListActivity {
 		}//if (i_res = -1)
 		
 		/*----------------------------
-		 * 3. Prepare => ActivityItem list
+		 * 3. Prepare => Memo list
 			----------------------------*/
 		memoList = Methods.getMemoList_fromDB(this, ai.getDb_id());
+//		memoList = Methods.getMemoList_fromDB(this);
 		
 		if (memoList == null) {
 			
@@ -95,13 +96,25 @@ public class ShowActivityActv extends ListActivity {
 			
 		} else {//if (memoList == null)
 
+			for (Memo memo : memoList) {
+				
+				// Log
+				Log.d("ShowActivityActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "memo.getActivity_id()" + memo.getActivity_id());
+				
+				
+			}
+			
+			
 			// Log
 			Log.d("MainActv.java" + "["
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "memoList.size(): " + memoList.size());
 			
 			/*----------------------------
-			 * 4. Prepare => ActivityItemListAdapter
+			 * 4. Prepare => MemoListAdapter
 				----------------------------*/
 			mlAdapter = new MemoListAdapter(
 									this,
@@ -120,6 +133,13 @@ public class ShowActivityActv extends ListActivity {
 		 * 9. Close db
 			----------------------------*/
 		rdb.close();
+		
+		//debug
+		// Log
+		Log.d("ShowActivityActv.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "ai.getName(): " + ai.getName() + "/" + "ai.getDb_id(): " + ai.getDb_id());
+		
 		
 	}//private void set_list()
 

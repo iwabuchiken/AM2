@@ -96,6 +96,7 @@ public class Methods {
 
 		// dlg_confirm_delete_activity.xml
 		dlg_confirm_delete_activity_bt_ok,
+
 		
 	}//public static enum DialogButtonTags
 	
@@ -167,6 +168,12 @@ public class Methods {
 		
 		// dlg_activity_list_menu.xml
 		dlg_activity_list_menu_lv,
+
+		// dlg_main_actv_filter.xml
+		dlg_main_actv_filter_lv,
+		
+		// dlg_main_actv_filter_group.xml
+		dlg_main_actv_filter_group_lv,
 		
 	}//public static enum DialogListTags
 	
@@ -2127,6 +2134,175 @@ public class Methods {
 		return aiList;
 	}//public static List<ActivityItem> getAIList_fromDB(Activity actv)
 
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. 
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static List<ActivityItem> find_AIs_by_group(Activity actv, String groupName) {
+		/*----------------------------
+		 * 1. db setup
+		 * 2. Table exists?
+		 * 3. Get group id by group name
+		 * 
+		 * 2. Cursor
+		 * 3. Build item objects
+		 * 
+		 * 9. Close db
+			----------------------------*/
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		
+		//
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 2. Table exists?
+			----------------------------*/
+		boolean res = dbu.tableExists(rdb, DBUtils.tableName_activities);
+		
+		if (res == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + DBUtils.tableName_activities);
+			
+			return null;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 3. Get group id by group name
+			----------------------------*/
+		long group_id = Methods.get_groupId_by_groupName(actv, groupName);
+		
+		/*----------------------------
+		 * 2. Cursor
+			----------------------------*/
+		String sql = "SELECT * FROM " + DBUtils.tableName_activities +
+						" WHERE " + DBUtils.cols_activities[1] + "='" + group_id + "'";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount() < 1");
+			
+			return null;
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 3. Build item objects
+			----------------------------*/
+		List<ActivityItem> aiList = new ArrayList<ActivityItem>();
+		
+		c.moveToFirst();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+			
+			ActivityItem ai = new ActivityItem(
+								c.getString(1),
+								c.getLong(2),
+								c.getLong(3), 
+								c.getLong(4)
+								);
+			
+			// db_id
+			ai.setDb_id(c.getLong(0));
+			
+			aiList.add(ai);
+			
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		rdb.close();
+		
+		return aiList;
+	}//public static List<ActivityItem> find_AIs_by_group(Activity actv)
+
+
+	/****************************************
+	 *
+	 * 
+	 * <Caller> 1. find_AIs_by_group(Activity actv, String groupName)
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 
+	 * 1.	-1		=> Item not in the table
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	private static long get_groupId_by_groupName(Activity actv, String groupName) {
+		/*----------------------------
+		 * 1. db
+			----------------------------*/
+		
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+		
+		/*----------------------------
+		 * 2. Is in the table?
+			----------------------------*/
+		boolean res = dbu.isInTable(
+										actv, DBUtils.dbName, 
+										DBUtils.tableName_groups, 
+										DBUtils.cols_groups[0],
+										groupName);
+
+		if (res == false) {
+			
+			// debug
+			Toast.makeText(actv, "このグループは、まだ登録されてません", 2000).show();
+			
+			return -1;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 3. Group name
+			----------------------------*/
+		String sql = "SELECT * FROM " + 
+							DBUtils.tableName_groups + 
+							" WHERE " + 
+							DBUtils.cols_groups[0] + 
+							"='" + groupName + "'";
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		c.moveToFirst();
+		
+		long group_id_obtained = c.getLong(0);
+		
+		/*----------------------------
+		 * 4. Close db
+			----------------------------*/
+		rdb.close();
+		
+		return group_id_obtained;
+		
+	}//private static long get_groupId_by_groupName(String groupName)
+	
 
 	/****************************************
 	 *
@@ -2307,6 +2483,59 @@ public class Methods {
 		return dlg;
 	
 	}//public static Dialog dlg_template_okCancel()
+
+	public static Dialog dlg_template_cancel_2_dialogues(
+			// Activity, layout
+			Activity actv, int layoutId,
+			// Title
+			int titleStringId,
+			// Cancel button
+			int cancelButtonId, 
+			// DialogTags => Cancel
+			Methods.DialogButtonTags cancelTag,
+			// First dialog
+			Dialog dlg
+			) {
+		/*----------------------------
+		* Steps
+		* 1. Set up
+		* 2. Add listeners => OnTouch
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		
+		// 
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+		dlg2.setContentView(layoutId);
+		
+		// Title
+		dlg2.setTitle(titleStringId);
+		
+		/*----------------------------
+		* 2. Add listeners => OnTouch
+		----------------------------*/
+		//
+		Button btn_cancel = (Button) dlg2.findViewById(cancelButtonId);
+		
+		//
+		btn_cancel.setTag(cancelTag);
+		
+		//
+		btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+		
+		/*----------------------------
+		* 3. Add listeners => OnClick
+		----------------------------*/
+		//
+		btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg2));
+		
+		//
+		//dlg.show();
+		
+		return dlg;
+
+	}//public static Dialog dlg_template_cancel_2_dialogues()
 
 	public static Dialog dlg_template_okCancel_2_dialogues(
 						// Activity, layout, title
@@ -2572,6 +2801,85 @@ public class Methods {
 		
 	}//public static boolean deleteItem_fromDB
 
+	public static List<String> get_groupList_fromDB(Activity actv) {
+		/*----------------------------
+		 * 1. db setup
+		 * 1-1. Table exists?
+		 * 2. Cursor
+		 * 3. Build item objects
+		 * 
+		 * 9. Close db
+			----------------------------*/
+		/*----------------------------
+		 * 1. db setup
+			----------------------------*/
+		DBUtils dbu = new DBUtils(actv, DBUtils.dbName);
+		SQLiteDatabase rdb = dbu.getReadableDatabase();
+
+		/*----------------------------
+		 * 1-1. Table exists?
+			----------------------------*/
+		boolean res = dbu.tableExists(rdb, DBUtils.tableName_groups);
+		
+		if (res == false) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Table doesn't exist: " + DBUtils.tableName_groups);
+			
+			rdb.close();
+			
+			return null;
+			
+		}//if (res == false)
+		
+		/*----------------------------
+		 * 2. Cursor
+			----------------------------*/
+		String sql = "SELECT * FROM " + DBUtils.tableName_groups;
+		
+		Cursor c = rdb.rawQuery(sql, null);
+		
+		actv.startManagingCursor(c);
+		
+		if (c.getCount() < 1) {
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "c.getCount() < 1");
+			
+			rdb.close();
+			
+			return null;
+			
+		}//if (c.getCount() < 1)
+		
+		/*----------------------------
+		 * 3. Build item objects
+			----------------------------*/
+		List<String> groups = new ArrayList<String>();
+		
+		c.moveToFirst();
+		
+		for (int i = 0; i < c.getCount(); i++) {
+			
+			
+			groups.add(c.getString(1));
+			
+			c.moveToNext();
+			
+		}//for (int i = 0; i < c.getCount(); i++)
+		
+		/*----------------------------
+		 * 9. Close db
+			----------------------------*/
+		rdb.close();
+		
+		return groups;
+		
+	}//public static List<Memo> getMemoList_fromDB(Activity actv)
 
 	public static List<Memo> getMemoList_fromDB(Activity actv) {
 		/*----------------------------
@@ -2699,7 +3007,8 @@ public class Methods {
 		 * 2. Cursor
 			----------------------------*/
 		String sql = "SELECT * FROM " + DBUtils.tableName_memos +
-						" WHERE " + android.provider.BaseColumns._ID + "='" +
+//						" WHERE " + android.provider.BaseColumns._ID + "='" +
+						" WHERE " + DBUtils.cols_memos[1] + "='" +
 						String.valueOf(ai_db_id) + "'";
 		
 		Cursor c = rdb.rawQuery(sql, null);
@@ -2828,5 +3137,271 @@ public class Methods {
 		
 	}//public static void addMemo(Activity actv, long ai_db_id, String content)
 
+	public static void dlg_main_opt_filter(Activity actv) {
+		/*----------------------------
+		 * 1. Setup dialog
+		 * 2. ListView
+		 * 3. Adapter
+		 * 4. Set adapter
+		 * 5. Set listener
+		 * 
+		 * 9. Show dialog
+			----------------------------*/
+		Dialog dlg = dlg_template_cancel(
+				// Activity, layout
+				actv, R.layout.dlg_main_actv_filter,
+				// Title
+				R.string.main_opt_menu_filter,
+				// Cancel button, DialogTags => Cancel
+				R.id.dlg_main_actv_filter_btn_cancel, 
+				Methods.DialogButtonTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. ListView
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_main_actv_filter_lv);
+		
+		List<String> items = new ArrayList<String>();
+		
+		String[] itemNames = {
+				
+				actv.getString(R.string.dlg_main_actv_filter_list_item_group),
+				actv.getString(R.string.dlg_main_actv_filter_list_item_genre),
+				actv.getString(R.string.dlg_main_actv_filter_list_item_date),
+				actv.getString(R.string.dlg_main_actv_filter_list_item_keyword)
+		};//String[] itemNames
+		
+		for (String name : itemNames) {
+			
+			items.add(name);
+			
+		}
+		
+		/*----------------------------
+		 * 3. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adp = new ArrayAdapter<String>(
+				actv,
+				android.R.layout.simple_list_item_1,
+				items
+				);
+		
+		/*----------------------------
+		 * 4. Set adapter
+			----------------------------*/
+		lv.setAdapter(adp);
+
+		/*----------------------------
+		 * 5. Set listener
+			----------------------------*/
+		lv.setTag(Methods.DialogListTags.dlg_main_actv_filter_lv);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg));
+		
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+		dlg.show();
+		
+		
+	}//public static void dlg_main_opt_filter(Activity actv)
+
+	public static void mainOptFilter(Activity actv, Dialog dlg, String item) {
+		/*----------------------------
+		 * 1. Dialog
+		 * 
+		 * 9. Show dialog
+			----------------------------*/
+		Dialog dlg2 = new Dialog(actv);
+
+		if (item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_group))) {
+			/*----------------------------
+			 * 1. Content view, title
+			 * 2. Listeners
+			 * 3. List view
+				----------------------------*/
+			
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "item: " + item + "/" +
+					"actv.getString(R.string.dlg_main_actv_filter_list_item_group): " +
+					actv.getString(R.string.dlg_main_actv_filter_list_item_group));
+			
+//					+ "actv.getString(R.string.dlg_main_actv_filter_list_item_group): " + 
+//							actv.getString(R.string.dlg_main_actv_filter_list_item_group));
+			
+			
+			//
+			dlg2.setContentView(R.layout.dlg_main_actv_filter_group);
+			
+			// Title
+			dlg2.setTitle(R.string.dlg_main_actv_filter_list_group_title);
+			
+			/*----------------------------
+			* 2. Listeners
+			----------------------------*/
+			//
+			Button btn_cancel = (Button) dlg2.findViewById(R.id.dlg_main_actv_filter_group_btn_cancel);
+			
+			//
+			btn_cancel.setTag(Methods.DialogButtonTags.dlg_generic_dismiss_second_dialog);
+			
+			//
+			btn_cancel.setOnTouchListener(new DialogButtonOnTouchListener(actv, dlg2));
+			btn_cancel.setOnClickListener(new DialogButtonOnClickListener(actv, dlg, dlg2));
+
+			/*----------------------------
+			 * 3. List view
+			 * 		1. Set up
+			 * 		2. Listener
+				----------------------------*/
+			ListView lv = (ListView) dlg2.findViewById(R.id.dlg_main_actv_filter_group_lv);
+			
+			lv.setTag(Methods.DialogListTags.dlg_main_actv_filter_group_lv);
+			
+//			List<String> groups = new ArrayList<String>();
+			List<String> groups = Methods.get_groupList_fromDB(actv);
+			
+			
+			
+			ArrayAdapter<String> adp = new ArrayAdapter<String>(
+					actv,
+					android.R.layout.simple_list_item_1,
+					groups
+					);
+
+			lv.setAdapter(adp);
+			
+			/*----------------------------
+			 * 3.2. Listener
+				----------------------------*/
+			lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, dlg2));
+			
+			dlg2.show();
+			
+		} else {//if (dlg2 == null)
+			
+			Toast.makeText(actv, "Not 'group'", 2000).show();
+
+//			dlg2.show();
+
+		}//if (dlg2 == null)
+//		dlg2.show();
+		
+
+		
+//		Dialog dlg2 = null;
+		
+//		if (item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_group))) {
+//			
+//			dlg2 = Methods.dlg_template_cancel_2_dialogues(
+//					actv, 
+//					R.layout.dlg_main_actv_filter_group, 
+//					R.string.dlg_main_actv_filter_list_group_title,
+//					R.id.dlg_main_actv_filter_group_btn_cancel,
+//					Methods.DialogButtonTags.dlg_generic_dismiss_second_dialog, 
+//					dlg);
+//			
+//		}//if (item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_group)))
+		
+		// debug
+//		Toast.makeText(actv, 
+//				"R.string: " + actv.getString(R.string.dlg_main_actv_filter_list_item_group) + "/" +
+//				"item: " + item, 
+//				2000).show();
+//		Toast.makeText(actv, 
+//				String.valueOf(item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_group))), 
+//		2000).show();
+//		if (dlg2 == null) {
+//			
+//			Toast.makeText(actv, "dlg2 == null", 2000).show();
+//			
+//		} else {//if (dlg2 == null)
+//			
+//			Toast.makeText(actv, "dlg2 != null", 2000).show();
+//			
+//		}//if (dlg2 == null)
+//		Toast.makeText(actv, 
+//			String.valueOf(dlg2 == null), 
+//			2000).show();
+		
+//		item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_group))
+		/*----------------------------
+		 * 9. Show dialog
+			----------------------------*/
+//		if (dlg2 != null) {
+//			
+//			dlg2.show();
+//			
+//			Toast.makeText(actv, "dlg2 => Shown", 2000).show();
+//			
+//		} else {//if (dlg2 != null)
+//			
+//			// debug
+//			Toast.makeText(actv, "ダイアローグを作れませんでした", 2000).show();
+//			
+//		}//if (dlg2 != null)
+		
+//		// debug
+//		Toast.makeText(actv, item, 2000).show();
+		
+	}//public static void mainOptFilter(Activity actv, Dialog dlg)
+
+	/****************************************
+	 * 
+	 * 
+	 * <Caller> 1. DialogOnItemClickListener.onItemClick() # case dlg_main_actv_filter_group_lv
+	 * 
+	 * <Desc> 1. <Params> 1.
+	 * 
+	 * <Return> 1.
+	 * 
+	 * <Steps> 1.
+	 ****************************************/
+	public static void mainOptFilter_group(Activity actv, Dialog dlg,
+			Dialog dlg2, String item) {
+		/*----------------------------
+		 * 1. Update aiList
+		 * 2. Notify adapter
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		MainActv.aiList.clear();
+		
+//		MainActv.aiList = Methods.find_AIs_by_group(actv, item);
+		MainActv.aiList.addAll(Methods.find_AIs_by_group(actv, item));
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "MainActv.aiList.size(): " + MainActv.aiList.size());
+		
+		
+		/*----------------------------
+		 * 2. Notify adapter
+			----------------------------*/
+		MainActv.ailAdapter.notifyDataSetChanged();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "MainActv.ailAdapter => Notified");
+		
+		/*----------------------------
+		 * 3. Dismiss dialogues
+			----------------------------*/
+		dlg2.dismiss();
+		dlg.dismiss();
+		
+		// debug
+		Toast.makeText(actv, "フィルターしました", 2000).show();
+		
+	}//public static void mainOptFilter_group()
+
 
 }//public class Methods
+
+////debug
+//		Toast.makeText(actv, item, 2000).show();
+		

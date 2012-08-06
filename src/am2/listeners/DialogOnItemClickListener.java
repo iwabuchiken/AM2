@@ -54,6 +54,17 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 		
 	}//public DialogOnItemClickListener(Activity actv, Dialog dlg, ActivityItem ai)
 
+	public DialogOnItemClickListener(Activity actv, Dialog dlg, Dialog dlg2) {
+		
+		this.actv = actv;
+		this.dlg = dlg;
+		this.dlg2 = dlg2;
+
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
+
+		
+	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		/*----------------------------
@@ -125,6 +136,32 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			
 			
 			break;
+
+		case dlg_main_actv_filter_lv://----------------------------------------------------
+			
+			item = (String) parent.getItemAtPosition(position);
+			
+//			// debug
+//			Toast.makeText(actv, item, 2000).show();
+			
+			
+			Methods.mainOptFilter(actv, dlg, item);
+			
+			break;// case dlg_main_actv_filter_lv
+
+		case dlg_main_actv_filter_group_lv://----------------------------------------------------
+			
+			item = (String) parent.getItemAtPosition(position);
+			
+			// Log
+			Log.d("DialogOnItemClickListener.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "item: " + item);
+			
+			
+			Methods.mainOptFilter_group(actv, dlg, dlg2, item);
+			
+			break;// case dlg_main_actv_filter_group_lv
 			
 		}//switch (tag)
 		

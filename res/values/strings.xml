@@ -6,6 +6,7 @@
 
     <!-- menu_main.xml -->
 	    <string name="main_opt_menu_register">登録</string>
+	    <string name="main_opt_menu_filter">フィルター</string>
 	    
     <!-- Generic items -->
 	    <string name="generic_tv_confirm">確認</string>
@@ -54,6 +55,12 @@
 		<string name="actv_show_activity_bt_2">追加</string>
 		<string name="actv_show_activity_bt_3">Bt3</string>
 	
-	<!-- actv_memo.xml -->
+	<!-- dlg_main_actv_filter.xml -->
+		<string name="dlg_main_actv_filter_list_item_group">グループ</string>
+		<string name="dlg_main_actv_filter_list_item_genre">ジャンル</string>
+		<string name="dlg_main_actv_filter_list_item_date">日付</string>
+		<string name="dlg_main_actv_filter_list_item_keyword">キーワード</string>
+		
+		<string name="dlg_main_actv_filter_list_group_title">フィルター：グループ</string>
 		
 </resources>
