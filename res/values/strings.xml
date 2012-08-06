@@ -14,6 +14,9 @@
 	    <string name="generic_tv_register">登録</string>
 	    <string name="generic_tv_clear">クリアー</string>
 	    <string name="generic_tv_input_empty">入力がありません</string>
+	    <string name="generic_tv_edit">編集</string>
+	    <string name="generic_tv_delete">削除</string>
+	    <string name="generic_tv_copy">コピー</string>
 	    
 	    <string name="generic_bt_clear">クリアー</string>
 	    <string name="generic_bt_back">戻る</string>
@@ -62,5 +65,13 @@
 		<string name="dlg_main_actv_filter_list_item_keyword">キーワード</string>
 		
 		<string name="dlg_main_actv_filter_list_group_title">フィルター：グループ</string>
+		
+	<!-- dlg_menu_memo.xml -->
+		<string name="dlg_menu_memo_title">メニュー：メモ</string>
+	
+	<!-- dlg_edit_memo.xml -->
+		<string name="dlg_edit_memo_title">メモ：編集</string>
+		<string name="dlg_edit_memo_tv_activity">活動</string>
+		<string name="dlg_edit_memo_tv_group">グループ</string>
 		
 </resources>

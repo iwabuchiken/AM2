@@ -1,6 +1,7 @@
 package am2.listeners;
 
 import am2.items.ActivityItem;
+import am2.items.Memo;
 import am2.utils.Methods;
 import android.app.Activity;
 import android.os.Vibrator;
@@ -37,43 +38,6 @@ public class ListOnItemLongClickListener implements OnItemLongClickListener {
 		
 		vib.vibrate(Methods.vibLength_click);
 		
-//		// Log
-//		if (tag != null) {
-//			
-//			Log.d("ListOnLongClickListener.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "tag.name(): " + tag.name());
-//
-//		} else {//if (tag != null)
-//			Log.d("ListOnLongClickListener.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "tag => null");
-//		}//if (tag != null)
-//
-//		if (tag2 != null) {
-//			
-//			Log.d("ListOnLongClickListener.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "tag2.name(): " + tag2.name());
-//
-//		} else {//if (tag2 != null)
-//			Log.d("ListOnLongClickListener.java" + "["
-//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//					+ "]", "tag2 => null");
-//		}//if (tag2 != null)
-
-		
-//		Log.d("ListOnLongClickListener.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "tag2.name(): " + tag2.name());
-		
-		
-
-//		// Log
-//		Log.d("ListOnLongClickListener.java" + "["
-//				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
-//				+ "]", "v.getClass().getName(): " + v.getClass().getName());
-		
 		switch (tag) {
 		
 		/****************************************
@@ -86,8 +50,21 @@ public class ListOnItemLongClickListener implements OnItemLongClickListener {
 			
 			Methods.dlg_activity_list(actv, ai);
 			
-			break;
+			break;// case main_activity_list
 		
+		case show_actv_memo_list://-----------------------------------------------
+			
+			Memo m = (Memo) parent.getItemAtPosition(position);
+			
+			Methods.dlg_menu_Memo(actv, m);
+			
+//			// Log
+//			Log.d("ListOnItemLongClickListener.java" + "["
+//					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+//					+ "]", "memo: " + m.getText());
+			
+			break;// case show_actv_memo_list
+			
 		}//switch (tag)
 		
 		return false;

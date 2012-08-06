@@ -18,6 +18,9 @@ g p origin master
 git log --grep=B4 -3
 git log --grep=B5 -3
 
+git log --grep=B2
+
+
 git log --grep=master -3
 
 git log --grep=refresh -3
@@ -28,6 +31,8 @@ g c -a
 
 gitk
 
+git rm --cache *.class *.apk
+git rm --cache *.ap_ *.dex
 
 [Git for mm]
 pushd C:\WORKS\WORKSPACES_ANDROID\FM

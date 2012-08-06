@@ -6,6 +6,7 @@ import am2.items.ActivityItem;
 import am2.items.Memo;
 import am2.listeners.ButtonOnClickListener;
 import am2.listeners.ButtonOnTouchListener;
+import am2.listeners.ListOnItemLongClickListener;
 import am2.utils.ActivityItemListAdapter;
 import am2.utils.DBUtils;
 import am2.utils.MemoListAdapter;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,7 +147,8 @@ public class ShowActivityActv extends ListActivity {
 
 	private void set_listeners() {
 		/*----------------------------
-		 * 1. Cancel
+		 * 1. Button "’Ç‰Á"
+		 * 2. List view
 			----------------------------*/
 		Button bt_add = (Button) findViewById(R.id.actv_show_activity_bt_2);
 //		Button bt_cancel = (Button) findViewById(R.id.actv_register_activity_bt_cancel);
@@ -162,6 +165,15 @@ public class ShowActivityActv extends ListActivity {
 				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 				+ "]", "Listeners => Set");
 
+		/*----------------------------
+		 * 2. List view
+			----------------------------*/
+		ListView lv = this.getListView();
+		
+		lv.setTag(Methods.ListItemTags.show_actv_memo_list);
+		
+		lv.setOnItemLongClickListener(new ListOnItemLongClickListener(this));
+		
 	}//private void set_listeners()
 	
 	@Override

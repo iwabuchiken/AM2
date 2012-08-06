@@ -148,7 +148,9 @@ public class Methods {
 	public static enum ListItemTags {
 		// MainActivity.java
 		main_activity_list,
-		
+
+		// ShowActivityActv.java
+		show_actv_memo_list,
 		
 	}//public static enum LongClickTags
 
@@ -174,6 +176,9 @@ public class Methods {
 		
 		// dlg_main_actv_filter_group.xml
 		dlg_main_actv_filter_group_lv,
+
+		// dlg_menu_memo.xml
+		dlg_menu_memo_lv,
 		
 	}//public static enum DialogListTags
 	
@@ -3398,6 +3403,82 @@ public class Methods {
 		Toast.makeText(actv, "フィルターしました", 2000).show();
 		
 	}//public static void mainOptFilter_group()
+
+	
+	public static void dlg_menu_Memo(Activity actv, Memo m) {
+		/*----------------------------
+		 * 1. Dialog
+		 * 2. Prep => List
+		 * 3. Adapter
+		 * 4. Set adapter
+		 * 5. Set listener
+		 * 
+		 * 9. Show
+			----------------------------*/
+		Dialog dlg = dlg_template_cancel(
+				// Activity, layout
+				actv, R.layout.dlg_menu_memo,
+				// Title
+				R.string.dlg_menu_memo_title,
+				// Cancel button, DialogTags => Cancel
+				R.id.dlg_menu_memo_btn_cancel, 
+				Methods.DialogButtonTags.dlg_generic_dismiss);
+		
+		/*----------------------------
+		 * 2. Prep => List
+			----------------------------*/
+		List<String> menuItems = new ArrayList<String>();
+		
+		menuItems.add(actv.getString(R.string.generic_tv_edit));
+		menuItems.add(actv.getString(R.string.generic_tv_delete));
+		menuItems.add(actv.getString(R.string.generic_tv_copy));
+		
+		/*----------------------------
+		 * 3. Adapter
+			----------------------------*/
+		ArrayAdapter<String> adp = new ArrayAdapter<String>(
+				actv,
+				android.R.layout.simple_list_item_1,
+				menuItems
+				);
+		
+		/*----------------------------
+		 * 4. Set adapter
+			----------------------------*/
+		ListView lv = (ListView) dlg.findViewById(R.id.dlg_menu_memo_lv);
+		
+		lv.setAdapter(adp);
+		
+		/*----------------------------
+		 * 5. Set listener
+			----------------------------*/
+		lv.setTag(Methods.DialogListTags.dlg_menu_memo_lv);
+		
+		lv.setOnItemClickListener(new DialogOnItemClickListener(actv, dlg, m));
+		
+		/*----------------------------
+		 * 9. Show
+			----------------------------*/
+		dlg.show();
+		
+	}//public static void dlg_menu_Memo(Activity actv, Memo m)
+
+	public static void dlg_editMemo(Activity actv, Dialog dlg, Memo m) {
+		/*----------------------------
+		 * 1. Buil dialog
+		 * 2. Set text
+		 * 2-2. "Ok" button
+		 * 3. Show dialog
+			----------------------------*/
+		Dialog dlg2 = new Dialog(actv);
+		
+		//
+//		dlg2.setContentView(R.layout.dlg2_register);
+		
+		// Title
+		dlg2.setTitle(actv.getString(R.string.generic_tv_register));
+		
+	}//public static void dlg_editMemo(Activity actv, Dialog dlg, Memo m)
 
 
 }//public class Methods

@@ -1,6 +1,7 @@
 package am2.listeners;
 
 import am2.items.ActivityItem;
+import am2.items.Memo;
 import am2.main.*;
 import am2.utils.Methods;
 
@@ -25,7 +26,8 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 	Dialog dlg2;
 	
 	ActivityItem ai;
-	
+
+	Memo m;
 	//
 	Vibrator vib;
 	
@@ -64,6 +66,16 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 
 		
 	}
+
+	public DialogOnItemClickListener(Activity actv, Dialog dlg, Memo m) {
+		
+		this.actv = actv;
+		this.dlg = dlg;
+		this.m = m;
+
+		vib = (Vibrator) actv.getSystemService(Context.VIBRATOR_SERVICE);
+		
+	}//public DialogOnItemClickListener(Activity actv, Dialog dlg, Memo m)
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -162,6 +174,28 @@ public class DialogOnItemClickListener implements OnItemClickListener {
 			Methods.mainOptFilter_group(actv, dlg, dlg2, item);
 			
 			break;// case dlg_main_actv_filter_group_lv
+
+		case dlg_menu_memo_lv://----------------------------------------------------
+			/*----------------------------
+			 * 1. Get item
+			 * 2. Switching
+				----------------------------*/
+			
+			item = (String) parent.getItemAtPosition(position);
+
+			/*----------------------------
+			 * 2. Switching
+				----------------------------*/
+			if (item.equals(actv.getString(R.string.generic_tv_edit))) {
+				
+				Methods.dlg_editMemo(actv, dlg, m);
+				
+			} else {//if (item.equals(actv.getString(R.string.generic_tv_edit)))
+				
+			}//if (item.equals(actv.getString(R.string.generic_tv_edit)))
+			
+			
+			break;// case dlg_menu_memo_lv
 			
 		}//switch (tag)
 		
