@@ -90,8 +90,9 @@ public class MainActv extends ListActivity {
 		/*----------------------------
 		 * 3. Prepare => ActivityItem list
 			----------------------------*/
-		aiList = Methods.getAIList_fromDB(this);
-		
+		if(aiList == null) {
+			aiList = Methods.getAIList_fromDB(this);
+		}
 
 		if (aiList == null) {
 			// Log
