@@ -245,6 +245,63 @@ public class Methods {
 
 	}//public static void sortFileList(File[] files)
 
+
+	public static void sort_activitiesList_group(List<ActivityItem> aiList) {
+		// REF=> http://android-coding.blogspot.jp/2011/10/sort-file-list-in-order-by-implementing.html
+		Comparator<? super ActivityItem> ailist_comp = new Comparator<ActivityItem>(){
+//		Comparator ailist_comp = new Comparator<Object>(){
+			
+			public int compare(ActivityItem ai1, ActivityItem ai2) {
+//			public int compare(Object ai1, Object ai2) {
+				
+				if (ai1.getGroup_id() != ai2.getGroup_id()) {
+
+					return (int)(ai1.getGroup_id() - ai2.getGroup_id());
+					
+				} else {//if (ai1.getGroup_id() != ai2.getGroup_id())
+					
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", "ai1.getGroup_id() == ai2.getGroup_id()");
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", 
+								"ai1.getName(): " + ai1.getName() + "/" + "ai2.getName(): " + ai2.getName());
+					// Log
+					Log.d("Methods.java"
+							+ "["
+							+ Thread.currentThread().getStackTrace()[2]
+									.getLineNumber() + "]", 
+							"ai1.getName().compareToIgnoreCase(ai2.getName()): " + 
+								ai1.getName().compareToIgnoreCase(ai2.getName()));
+					
+					return ai1.getName().compareToIgnoreCase(ai2.getName());
+					
+				}//if (ai1.getGroup_id() != ai2.getGroup_id())
+				
+//				return pad2-pad1+file1.getName().compareToIgnoreCase(file2.getName());
+				
+//				return String.valueOf(file1.getName()).compareTo(file2.getName());
+			} 
+		 };//Comparator<? super ActivityItem> ailist_comp = new Comparator<ActivityItem>()
+		 
+		 //
+		Collections.sort(aiList, ailist_comp);
+
+		// Notify
+//		MainActv.ailAdapter.notifyDataSetChanged();
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", "Exit: sort_activitiesList_group()");
+		
+		
+	}//public static void sort_activitiesList_group(List<ActivityItem> aiList)
+
 	/*----------------------------
 	 * deleteDirectory(File target)()
 	 * 
@@ -3232,6 +3289,8 @@ public class Methods {
 			MainActv.aiList.clear();
 			
 			MainActv.aiList.addAll(Methods.getAIList_fromDB(actv));
+			
+			Methods.sort_activitiesList_group(MainActv.aiList);
 			
 			MainActv.ailAdapter.notifyDataSetChanged();
 			

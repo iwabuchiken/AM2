@@ -7,6 +7,7 @@
     <!-- menu_main.xml -->
 	    <string name="main_opt_menu_register">登録</string>
 	    <string name="main_opt_menu_filter">フィルター</string>
+	    <string name="main_opt_menu_sort">ソート</string>
 	    
     <!-- Generic items -->
 	    <string name="generic_tv_confirm">確認</string>

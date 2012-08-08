@@ -113,6 +113,9 @@ public class MainActv extends ListActivity {
 					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
 					+ "]", "aiList.size(): " + aiList.size());
 			
+			// Sort list
+			Methods.sort_activitiesList_group(aiList);
+			
 			/*----------------------------
 			 * 4. Prepare => ActivityItemListAdapter
 				----------------------------*/
@@ -193,11 +196,25 @@ public class MainActv extends ListActivity {
             	break;//case 0
             	
             case R.id.main_opt_menu_filter://--------------------------------
+        
+            	// Log
+				Log.d("MainActv.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Calling: Methods.dlg_main_opt_filter()");
+				
             	
             	Methods.dlg_main_opt_filter(this);
             	
             	break;// R.id.main_opt_menu_filter
             	
+            case R.id.main_opt_menu_sort://--------------------------------
+            	
+            	Methods.sort_activitiesList_group(aiList);
+            	
+            	ailAdapter.notifyDataSetChanged();
+            	
+            	break;
         }//switch (item.getItemId())
         
 		return true;

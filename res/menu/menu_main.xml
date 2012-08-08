@@ -13,5 +13,11 @@
         android:icon="@drawable/main_opt_menu_filter_30x30">
         
     </item>
+    <item 
+        android:id="@+id/main_opt_menu_sort" 
+        android:icon="@drawable/main_opt_menu_filter_30x30" 
+        android:title="@string/main_opt_menu_sort">
+        
+    </item>
     
 </menu>
