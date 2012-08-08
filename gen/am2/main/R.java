@@ -167,13 +167,14 @@ public final class R {
         public static final int dlg_confirm_delete_activity_tv_message=0x7f05001e;
         /**  dlg_confirm_delete_memo.xml 
          */
-        public static final int dlg_confirm_delete_memo_message=0x7f05002b;
+        public static final int dlg_confirm_delete_memo_message=0x7f05002c;
         /**  dlg_edit_memo.xml 
          */
-        public static final int dlg_edit_memo_title=0x7f050028;
-        public static final int dlg_edit_memo_tv_activity=0x7f050029;
-        public static final int dlg_edit_memo_tv_group=0x7f05002a;
-        public static final int dlg_main_actv_filter_list_group_title=0x7f050026;
+        public static final int dlg_edit_memo_title=0x7f050029;
+        public static final int dlg_edit_memo_tv_activity=0x7f05002a;
+        public static final int dlg_edit_memo_tv_group=0x7f05002b;
+        public static final int dlg_main_actv_filter_list_group_title=0x7f050027;
+        public static final int dlg_main_actv_filter_list_item_all=0x7f050026;
         public static final int dlg_main_actv_filter_list_item_date=0x7f050024;
         public static final int dlg_main_actv_filter_list_item_genre=0x7f050023;
         /**  dlg_main_actv_filter.xml 
@@ -182,7 +183,7 @@ public final class R {
         public static final int dlg_main_actv_filter_list_item_keyword=0x7f050025;
         /**  dlg_menu_memo.xml 
          */
-        public static final int dlg_menu_memo_title=0x7f050027;
+        public static final int dlg_menu_memo_title=0x7f050028;
         /**  dlg_register.xml 
          */
         public static final int dlg_register_lv_activity=0x7f050014;

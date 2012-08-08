@@ -3179,7 +3179,8 @@ public class Methods {
 				actv.getString(R.string.dlg_main_actv_filter_list_item_group),
 				actv.getString(R.string.dlg_main_actv_filter_list_item_genre),
 				actv.getString(R.string.dlg_main_actv_filter_list_item_date),
-				actv.getString(R.string.dlg_main_actv_filter_list_item_keyword)
+				actv.getString(R.string.dlg_main_actv_filter_list_item_keyword),
+				actv.getString(R.string.dlg_main_actv_filter_list_item_all)
 		};//String[] itemNames
 		
 		for (String name : itemNames) {
@@ -3219,9 +3220,28 @@ public class Methods {
 
 	public static void mainOptFilter(Activity actv, Dialog dlg, String item) {
 		/*----------------------------
+		 * 0. "All"
 		 * 1. Dialog
 		 * 
 		 * 9. Show dialog
+			----------------------------*/
+		/*----------------------------
+		 * 0. "All"
+			----------------------------*/
+		if(item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_all))) {
+			MainActv.aiList.clear();
+			
+			MainActv.aiList.addAll(Methods.getAIList_fromDB(actv));
+			
+			MainActv.ailAdapter.notifyDataSetChanged();
+			
+			dlg.dismiss();
+			
+			return;
+		}//if(item.equals(actv.getString(R.string.dlg_main_actv_filter_list_item_all)))
+		
+		/*----------------------------
+		 * 1. Dialog
 			----------------------------*/
 		Dialog dlg2 = new Dialog(actv);
 

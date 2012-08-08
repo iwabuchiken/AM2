@@ -63,6 +63,7 @@
 		<string name="dlg_main_actv_filter_list_item_genre">ジャンル</string>
 		<string name="dlg_main_actv_filter_list_item_date">日付</string>
 		<string name="dlg_main_actv_filter_list_item_keyword">キーワード</string>
+		<string name="dlg_main_actv_filter_list_item_all">すべて</string>
 		
 		<string name="dlg_main_actv_filter_list_group_title">フィルター：グループ</string>
 		

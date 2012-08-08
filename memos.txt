@@ -18,7 +18,7 @@ g p origin master
 git log --grep=B4 -3
 git log --grep=B5 -3
 
-git log --grep=B2
+git log --grep=B2 -2
 
 
 git log --grep=master -3
