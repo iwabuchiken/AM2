@@ -1,6 +1,14 @@
 package am2.main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import am2.utils.*;
 import am2.items.*;
@@ -49,7 +57,113 @@ public class MainActv extends ListActivity {
 		
 //		set_list();
 		
+		//debug
+		backup_db();
+		
+		
 	}//public void onCreate(Bundle savedInstanceState)
+
+	private void backup_db() {
+		String dirName_ExternalStorage = "/mnt/sdcard-ext";
+		
+		String dirPath_db_backup = dirName_ExternalStorage + "/AM2_backup";
+
+		String dirPath_db = "/data/data/am2.main/databases";
+		
+		String fileName_db_backup_trunk = "am2_backup";
+		String fileName_db_backup_ext = ".bk";
+
+		
+		
+		String time_label = Methods.get_TimeLabel(Methods.getMillSeconds_now());
+		
+		String db_src = StringUtils.join(new String[]{dirPath_db, DBUtils.dbName}, File.separator);
+		
+		String db_dst = StringUtils.join(new String[]{dirPath_db_backup, fileName_db_backup_trunk}, File.separator);
+		db_dst = db_dst + "_" + time_label + fileName_db_backup_ext;
+		
+		// Log
+		Log.d("Methods.java" + "["
+				+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+				+ "]", 
+				"db_src: " + db_src + " * " + "db_dst: " + db_dst);
+//				"db_dst: " + db_dst);
+		
+		/*----------------------------
+		 * 2. Prep => Files
+			----------------------------*/
+		File src = new File(db_src);
+		File dst = new File(db_dst);
+		
+		/*----------------------------
+		 * 2-2. Folder exists?
+			----------------------------*/
+		File db_backup = new File(dirPath_db_backup);
+		
+		if (!db_backup.exists()) {
+			
+			try {
+				db_backup.mkdir();
+				
+				// Log
+				Log.d("Methods.java" + "["
+						+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+						+ "]", "Folder created: " + db_backup.getAbsolutePath());
+			} catch (Exception e) {
+				
+				// Log
+				Log.d("Methods.java"
+						+ "["
+						+ Thread.currentThread().getStackTrace()[2]
+								.getLineNumber() + "]", "Create folder => Failed");
+				
+				return;
+				
+			}
+			
+		} else {//if (!db_backup.exists())
+			
+			// Log
+			Log.d("Methods.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Folder exists: ");
+			
+		}//if (!db_backup.exists())
+		
+		/*----------------------------
+		 * 3. Copy
+			----------------------------*/
+		try {
+			FileChannel iChannel = new FileInputStream(src).getChannel();
+			FileChannel oChannel = new FileOutputStream(dst).getChannel();
+			iChannel.transferTo(0, iChannel.size(), oChannel);
+			iChannel.close();
+			oChannel.close();
+			
+			// Log
+			Log.d("ThumbnailActivity.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "File copied");
+			
+			// debug
+			Toast.makeText(this, "DB backup => Done", 3000).show();
+
+		} catch (FileNotFoundException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+			
+		} catch (IOException e) {
+			// Log
+			Log.d("MainActv.java" + "["
+					+ Thread.currentThread().getStackTrace()[2].getLineNumber()
+					+ "]", "Exception: " + e.toString());
+		}//try
+
+		
+		
+	}
 
 	private void set_list() {
 		/*----------------------------

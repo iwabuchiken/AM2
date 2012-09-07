@@ -3777,6 +3777,15 @@ public class Methods {
 
 	}//public static void updateMemoList(Activity actv, Memo m)
 
+	public static String get_TimeLabel(long millSec) {
+		
+		 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		 
+		return sdf1.format(new Date(millSec));
+		
+	}//public static String get_TimeLabel(long millSec)
+
+	
 }//public class Methods
 
 ////debug
